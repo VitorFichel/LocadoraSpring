@@ -1,6 +1,6 @@
 package com.example.locadoraSpring.service;
 
-import com.example.locadoraSpring.daos.interfaceAluguel;
+import com.example.locadoraSpring.repository.AluguelRepository;
 import com.example.locadoraSpring.exceptions.ClienteNaoCadastrado;
 import com.example.locadoraSpring.model.*;
 import jakarta.persistence.DiscriminatorValue;
@@ -14,7 +14,7 @@ import java.util.List;
 public class AluguelService {
 
     @Autowired
-    private interfaceAluguel daoAluguel;
+    private AluguelRepository daoAluguel;
 
     @Autowired
     private VeiculoService veiculoService;
@@ -29,7 +29,7 @@ public class AluguelService {
 
     public Aluguel registrarAluguel(Aluguel a) throws ClienteNaoCadastrado {
         String placa = a.getVeiculo().getPlaca();
-        int cpf = a.getCliente().getCpf();
+        String cpf = a.getCliente().getCpf();
 
         // Verifica se veículo está alugado no momento
         if (daoAluguel.existsByVeiculoPlacaAndDataDevolucaoAfter(placa, new Date())) {

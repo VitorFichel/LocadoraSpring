@@ -1,5 +1,8 @@
 package com.example.locadoraSpring.model;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.util.Date;
@@ -14,16 +17,22 @@ public class Aluguel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
-    @ManyToOne
-    @JoinColumn(name = "veiculo_id", nullable = false)
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "veiculo_placa", nullable = false)
+    @NotBlank(message = "veiculo é obrigatorio")
     private Veiculo veiculo;
 
-    @ManyToOne
-    @JoinColumn(name = "cliente_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cliente_cpf", nullable = false)
+    @NotBlank(message = "cliente é obrigatorio")
     private Cliente cliente;
 
+
+    @Min(value = 1, message = "numero de dias deve ser maior que zero")
+    @Max(value = 365, message = "numero de dias deve ser menor que 365")
     @Column(nullable = false)
     private int dias;
 
@@ -39,6 +48,7 @@ public class Aluguel {
     private double aluguel;
 
     @PrePersist
+    @PreUpdate
     public void prepararPersistencia() {
         if (dataInicio != null && dias > 0) {
             // Calcula data de devolução

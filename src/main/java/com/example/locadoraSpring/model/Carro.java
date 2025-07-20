@@ -23,7 +23,7 @@ public class Carro extends Veiculo{
 
     @Override
     public double seguro() {
-        return (valorBem*0.03)/365;
+        return (getValorBem() *0.03)/365;
     }
 
 }

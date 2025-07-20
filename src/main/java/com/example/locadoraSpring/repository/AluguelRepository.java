@@ -1,12 +1,14 @@
-package com.example.locadoraSpring.daos;
+package com.example.locadoraSpring.repository;
 
 import com.example.locadoraSpring.model.Aluguel;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.Optional;
 
-public interface interfaceAluguel extends CrudRepository<Aluguel, Integer> {
+@Repository
+public interface AluguelRepository extends JpaRepository<Aluguel, Integer> {
 
     Optional<Aluguel> findByVeiculoPlaca(String placa);
     Optional<Aluguel> findByClienteCpf(Integer cpf);

@@ -21,7 +21,7 @@ public class Moto extends Veiculo{
     }
     @Override
     public double seguro() {
-        return (valorBem*0.11)/365;
+        return (getValorBem() *0.11)/365;
     }
 
 }

@@ -1,10 +1,11 @@
 package com.example.locadoraSpring.service;
 
-import com.example.locadoraSpring.daos.interfaceVeiculo;
+import com.example.locadoraSpring.repository.VeiculoRepository;
 import com.example.locadoraSpring.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -13,7 +14,7 @@ import java.util.Optional;
 public class VeiculoService {
 
     @Autowired
-    private interfaceVeiculo daoVeiculo;
+    private VeiculoRepository daoVeiculo;
 
 
     public List<Veiculo> listarTodos() {
@@ -24,7 +25,7 @@ public class VeiculoService {
         return daoVeiculo.save(v);
     }
 
-    public Optional<Veiculo> buscarPorId(String placa) {
+    public Optional<Veiculo> buscarPorPlaca(String placa) {
         return daoVeiculo.findById(placa);
     }
 

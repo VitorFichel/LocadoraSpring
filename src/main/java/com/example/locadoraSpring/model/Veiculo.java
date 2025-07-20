@@ -3,7 +3,11 @@ package com.example.locadoraSpring.model;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "tipo_veiculo")
 @JsonSubTypes({
@@ -18,28 +22,48 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "veiculo")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "tipo_veiculo", discriminatorType = DiscriminatorType.STRING)
 public abstract class Veiculo {
 
     @Id
-    @Column(name = "placa",  length = 20, nullable = false)
-    String placa;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
-    @Column(name = "marca",  length = 100, nullable = false)
-    String marca;
+    @NotBlank(message = "Placa é obrigatória")
+    @Size(min = 1, max = 8)
+    @Pattern(regexp = "^[A-Z]{3}[0-9][A-Z0-9][0-9]{2}$", message = "Placa deve estar no formato brasileiro válido")
+    @Column(name = "placa",  length = 8, nullable = false)
+    private String placa;
 
-    @Column(name = "modelo",  length = 100, nullable = false)
-    String modelo;
+    @NotBlank(message = "Marca é obrigatória")
+    @Size(min = 1, max = 50, message = "Marca deve ter entre 1 e 50 caracteres")
+    @Column(name = "marca",  length = 50, nullable = false)
+    private String marca;
 
+    @NotBlank(message = "Modelo é obrigatório")
+    @Size(min = 1, max = 50, message = "Modelo deve ter entre 1 e 50 caracteres")
+    @Column(name = "modelo",  length = 50, nullable = false)
+    private String modelo;
+
+    @Min(value = 1900, message = "Ano deve ser a partir de 1900")
+    @Max(value = 2030, message = "Ano deve ser até que 2030")
     @Column(name = "ano",  length = 4, nullable = false)
-    int ano;
+    private int ano;
 
-    @Column(name = "diaria",  length = 100, nullable = false)
-    double diaria;
+    @DecimalMin(value = "0.01", message = "Diária deve ser maior que zero")
+    @Digits(integer = 8, fraction = 2, message = "Diária deve ter no máximo 8 dígitos inteiros e 2 decimais")
+    @Column(name = "diaria", precision = 10, scale = 2, nullable = false)
+    private double diaria;
 
-    @Column(name = "valorBem",  length = 100, nullable = false)
-    double valorBem;
+    @DecimalMin(value = "0.01", message = "Valor do bem deve ser maior que zero")
+    @Digits(integer = 12, fraction = 2, message = "Valor do bem deve ter no máximo 12 dígitos inteiros e 2 decimais")
+    @Column(name = "valorBem", precision = 14, scale = 2, length = 100, nullable = false)
+    private double valorBem;
+
+    @OneToMany(mappedBy = "veiculo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Aluguel> alugueis =  new ArrayList<>();
 
     public Veiculo(String marca, String modelo, int ano, double valorBem, double diaria, String placa) {
         this.marca = marca;
@@ -48,6 +72,8 @@ public abstract class Veiculo {
         this.valorBem = valorBem;
         this.diaria = diaria;
         this.placa = placa;
+        this.alugueis = new ArrayList<>();
+
     }
 
 

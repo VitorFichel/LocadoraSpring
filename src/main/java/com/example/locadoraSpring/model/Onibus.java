@@ -22,7 +22,7 @@ public class Onibus extends Veiculo{
 
     @Override
     public double seguro() {
-        return (valorBem*0.20)/365;
+        return (getValorBem() *0.20)/365;
     }
 
 }

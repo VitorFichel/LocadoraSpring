@@ -1,6 +1,6 @@
 package com.example.locadoraSpring.service;
 
-import com.example.locadoraSpring.daos.interfaceCliente;
+import com.example.locadoraSpring.repository.ClienteRepository;
 import com.example.locadoraSpring.exceptions.ClienteJaCadastrado;
 import com.example.locadoraSpring.exceptions.ClienteNaoCadastrado;
 import com.example.locadoraSpring.model.Cliente;
@@ -13,7 +13,7 @@ import java.util.List;
 public class ClienteService {
 
     @Autowired
-    private interfaceCliente daoCliente;
+    private ClienteRepository daoCliente;
 
     public List<Cliente> listarTodos() {
         return (List<Cliente>) daoCliente.findAll();
@@ -26,7 +26,7 @@ public class ClienteService {
         return daoCliente.save(c);
     }
 
-    public Cliente buscarCliente(Integer cpf) throws ClienteNaoCadastrado {
+    public Cliente buscarCliente(String cpf) throws ClienteNaoCadastrado {
         return daoCliente.findById(cpf).orElseThrow(ClienteNaoCadastrado::new);
     }
 
@@ -37,7 +37,7 @@ public class ClienteService {
         throw new ClienteNaoCadastrado();
     }
 
-    public Cliente excluirCliente(Integer cpf) throws ClienteNaoCadastrado {
+    public Cliente excluirCliente(String cpf) throws ClienteNaoCadastrado {
         if (daoCliente.existsById(cpf)) {
         daoCliente.deleteById(cpf);}
         throw new ClienteNaoCadastrado();
