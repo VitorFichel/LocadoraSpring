@@ -53,13 +53,11 @@ public abstract class Veiculo {
     private int ano;
 
     @DecimalMin(value = "0.01", message = "Diária deve ser maior que zero")
-    @Digits(integer = 8, fraction = 2, message = "Diária deve ter no máximo 8 dígitos inteiros e 2 decimais")
-    @Column(name = "diaria", precision = 10, scale = 2, nullable = false)
+    @Column(name = "diaria", nullable = false)
     private double diaria;
 
     @DecimalMin(value = "0.01", message = "Valor do bem deve ser maior que zero")
-    @Digits(integer = 12, fraction = 2, message = "Valor do bem deve ter no máximo 12 dígitos inteiros e 2 decimais")
-    @Column(name = "valorBem", precision = 14, scale = 2, length = 100, nullable = false)
+    @Column(name = "valorBem", length = 100, nullable = false)
     private double valorBem;
 
     @OneToMany(mappedBy = "veiculo", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

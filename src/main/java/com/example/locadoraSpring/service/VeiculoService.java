@@ -26,7 +26,7 @@ public class VeiculoService {
     }
 
     public Optional<Veiculo> buscarPorPlaca(String placa) {
-        return daoVeiculo.findById(placa);
+        return daoVeiculo.findByPlaca(placa);
     }
 
     public void excluir(Veiculo v) {

@@ -11,7 +11,6 @@ import java.util.Optional;
 public interface AluguelRepository extends JpaRepository<Aluguel, Integer> {
 
     Optional<Aluguel> findByVeiculoPlaca(String placa);
-    Optional<Aluguel> findByClienteCpf(Integer cpf);
     Optional<Aluguel> findByVeiculoPlacaAndDataDevolucaoAfter(String placa, Date agora);
     boolean existsByVeiculoPlacaAndDataDevolucaoAfter(String placa, Date now);
 

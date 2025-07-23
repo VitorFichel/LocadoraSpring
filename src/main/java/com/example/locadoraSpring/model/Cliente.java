@@ -19,6 +19,7 @@ public class Cliente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
     @NotBlank
     @Size(min = 1, max = 11, message = "cpf deve ter 11 caracteres")

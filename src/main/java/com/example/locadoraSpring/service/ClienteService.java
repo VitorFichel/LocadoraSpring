@@ -27,7 +27,7 @@ public class ClienteService {
     }
 
     public Cliente buscarCliente(String cpf) throws ClienteNaoCadastrado {
-        return daoCliente.findById(cpf).orElseThrow(ClienteNaoCadastrado::new);
+        return daoCliente.findByCpf(cpf).orElseThrow(ClienteNaoCadastrado::new);
     }
 
     public Cliente alterarCliente(Cliente c) throws ClienteNaoCadastrado {

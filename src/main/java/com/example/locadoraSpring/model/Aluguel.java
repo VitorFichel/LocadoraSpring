@@ -1,4 +1,5 @@
 package com.example.locadoraSpring.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -21,13 +22,13 @@ public class Aluguel {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "veiculo_placa", nullable = false)
-    @NotBlank(message = "veiculo é obrigatorio")
     private Veiculo veiculo;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "cliente_cpf", nullable = false)
-    @NotBlank(message = "cliente é obrigatorio")
     private Cliente cliente;
 
 

@@ -37,7 +37,7 @@ public class AluguelService {
         }
 
         // Busca veículo e cliente
-        Veiculo veiculo = veiculoService.buscarPorId(placa)
+        Veiculo veiculo = veiculoService.buscarPorPlaca(placa)
                 .orElseThrow(() -> new RuntimeException("Veículo não encontrado com a placa: " + placa));
 
         Cliente cliente = clienteService.buscarCliente(cpf);
