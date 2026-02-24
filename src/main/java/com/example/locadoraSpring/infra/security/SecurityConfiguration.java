@@ -28,9 +28,14 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
+                    // Autenticação
                     .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                     .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/cliente", "/aluguel", "/veiculo").hasRole("ADMIN")
+
+                    // Swagger UI - deixar acessível para visualizar a documentação
+                    .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**", "/v3/api-docs.yaml").permitAll()
+
+                    // Todas as outras rotas requerem autenticação
                     .anyRequest().authenticated()
 
                 )
