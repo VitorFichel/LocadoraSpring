@@ -1,5 +1,7 @@
 package com.example.locadoraSpring.service;
 
+import com.example.locadoraSpring.exceptions.VeiculoAlugado;
+import com.example.locadoraSpring.exceptions.VeiculoNaoCadastrado;
 import com.example.locadoraSpring.repository.AluguelRepository;
 import com.example.locadoraSpring.exceptions.ClienteNaoCadastrado;
 import com.example.locadoraSpring.model.*;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AluguelService {
@@ -27,27 +30,17 @@ public class AluguelService {
                 .orElseThrow(() -> new RuntimeException("Aluguel não encontrado para a placa: " + placa));
     }
 
-    public Aluguel registrarAluguel(Aluguel a) throws ClienteNaoCadastrado {
-        String placa = a.getVeiculo().getPlaca();
-        String cpf = a.getCliente().getCpf();
-
-        // Verifica se veículo está alugado no momento
-        if (daoAluguel.existsByVeiculoPlacaAndDataDevolucaoAfter(placa, new Date())) {
-            throw new RuntimeException("Veículo está atualmente alugado.");
-        }
+    public Aluguel registrarAluguel(String placa, String cpf, Aluguel aluguel) throws ClienteNaoCadastrado, VeiculoNaoCadastrado, VeiculoAlugado {
 
         // Busca veículo e cliente
-        Veiculo veiculo = veiculoService.buscarPorPlaca(placa)
-                .orElseThrow(() -> new RuntimeException("Veículo não encontrado com a placa: " + placa));
-
+        Veiculo veiculo = veiculoService.buscarPorPlaca(placa);
         Cliente cliente = clienteService.buscarCliente(cpf);
 
-        // Associa entidades ao aluguel
-        a.setVeiculo(veiculo);
-        a.setCliente(cliente);
+        // Verifica se veículo está alugado no momento
+       daoAluguel.VerifyConflictsAluguel(placa);
 
         // Salva no banco (a data_devolucao já será calculada com @PrePersist)
-        return daoAluguel.save(a);
+        return daoAluguel.save(aluguel);
     }
 
     public Aluguel registrarDevolucao(String placa) {

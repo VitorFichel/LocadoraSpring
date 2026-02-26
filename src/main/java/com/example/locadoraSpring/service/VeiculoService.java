@@ -1,5 +1,6 @@
 package com.example.locadoraSpring.service;
 
+import com.example.locadoraSpring.exceptions.VeiculoNaoCadastrado;
 import com.example.locadoraSpring.repository.VeiculoRepository;
 import com.example.locadoraSpring.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,8 @@ public class VeiculoService {
         return daoVeiculo.save(v);
     }
 
-    public Optional<Veiculo> buscarPorPlaca(String placa) {
-        return daoVeiculo.findByPlaca(placa);
+    public Veiculo buscarPorPlaca(String placa) throws VeiculoNaoCadastrado {
+        return daoVeiculo.findByPlaca(placa).orElseThrow(() -> new VeiculoNaoCadastrado(placa));
     }
 
     public void excluir(Veiculo v) {
